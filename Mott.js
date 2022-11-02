@@ -12,8 +12,11 @@ import {
 	Button,
 	Platform,
 } from 'react-native';
+// import { useDeviceOrientation } from '@react-native-community/hooks';
 
 export default function Mott() {
+	// let { landscape } = useDeviceOrientation();
+
 	return (
 		<>
 			<StatusBar />
@@ -69,6 +72,16 @@ export default function Mott() {
 					<Text>oooooh it's some naked text</Text>
 					<Text style={styles.text}>oooooh it's some text</Text>
 				</View>
+				<View
+					style={{
+						backgroundColor: 'dodgerblue',
+						width: '50%',
+						height: '30%',
+						// height: landscape ? '100%' : '30%',
+					}}
+				>
+					<Text>it work</Text>
+				</View>
 				<Button
 					title='Click Me'
 					onPress={() =>
@@ -76,7 +89,6 @@ export default function Mott() {
 							console.log(text)
 						)
 					}
-					style={{ borderRadius: 15, backgroundColor: 'yellow' }}
 				/>
 			</SafeAreaView>
 		</>

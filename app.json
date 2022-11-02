@@ -5,7 +5,7 @@
 		"version": "1.0.0",
 		"owner": "clairerrob",
 		"description": "an app for keeping up with bondcat",
-		"orientation": "portrait",
+		"orientation": "portait",
 		"icon": "./assets/icon.png",
 		"userInterfaceStyle": "light",
 		"splash": {
