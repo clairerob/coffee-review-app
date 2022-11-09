@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image, ImageBackground } from 'react-native';
 import { Headline } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -7,17 +7,24 @@ export default function Header({ navigation, title }) {
 		navigation.openDrawer();
 	};
 	return (
-		<View style={styles.header}>
+		<ImageBackground
+			source={require('../assets/coffee-bg.jpg')}
+			style={styles.header}
+		>
 			<MaterialIcons
 				name='menu'
 				size={28}
 				style={styles.icon}
 				onPress={openMenu}
 			/>
-			<View>
+			<View style={styles.headerTitle}>
+				<Image
+					source={require('../assets/heart_logo.png')}
+					style={styles.headerImage}
+				/>
 				<Headline>{title}</Headline>
 			</View>
-		</View>
+		</ImageBackground>
 	);
 }
 
@@ -32,5 +39,13 @@ const styles = StyleSheet.create({
 	icon: {
 		position: 'absolute',
 		left: 16,
+	},
+	headerTitle: {
+		flexDirection: 'row',
+	},
+	headerImage: {
+		width: 26,
+		height: 26,
+		marginHorizontal: 10,
 	},
 });

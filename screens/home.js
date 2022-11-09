@@ -1,15 +1,21 @@
 import { useContext, useState } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, View, StyleSheet } from 'react-native';
 import {
 	useTheme,
 	Switch,
 	TouchableRipple,
 	Headline,
-	List,
 	Button,
+	Portal,
+	Modal,
+	Provider,
+	Title,
+	Text,
 } from 'react-native-paper';
 import { ThemeContext } from '../styles/ThemeContext';
 import { globalStyles } from '../styles/global';
+import ItemCard from '../components/ItemCard';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function Home({ navigation }) {
 	const { colors } = useTheme();
@@ -17,6 +23,11 @@ export default function Home({ navigation }) {
 	const [isSwitchOn, setIsSwitchOn] = useState(false);
 
 	const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+
+	const [visible, setVisible] = useState(false);
+
+	const showModal = () => setVisible(true);
+	const hideModal = () => setVisible(false);
 
 	const [reviews, setReviews] = useState([
 		{
@@ -41,9 +52,7 @@ export default function Home({ navigation }) {
 
 	return (
 		<View style={globalStyles.container}>
-			<Headline style={{ backgroundColor: colors.primary }}>
-				Home Screen
-			</Headline>
+			<Headline>Home Screen</Headline>
 			<TouchableRipple onPress={() => toggleTheme()}>
 				<Switch
 					style={[{ backgroundColor: colors.accent }]}
@@ -54,9 +63,8 @@ export default function Home({ navigation }) {
 			<FlatList
 				data={reviews}
 				renderItem={({ item }) => (
-					<List.Item
-						style={{ color: colors.secondary }}
-						title={item.title}
+					<ItemCard
+						item={item}
 						onPress={() => navigation.navigate('Review', item)}
 					/>
 				)}
@@ -64,6 +72,52 @@ export default function Home({ navigation }) {
 			<Button onPress={() => navigation.navigate('AboutStack')}>
 				About Us
 			</Button>
+			<Provider>
+				<Portal>
+					<Modal
+						visible={visible}
+						onDismiss={hideModal}
+						contentContainerStyle={{
+							backgroundColor: '#9adfed',
+							padding: 20,
+							width: '90%',
+							height: '70%',
+							alignItems: 'center',
+							justifyContent: 'center',
+							alignSelf: 'center',
+						}}
+					>
+						<View style={styles.modalContent}>
+							<MaterialIcons
+								name='close'
+								size={24}
+								onPress={() => hideModal}
+								style={{ ...styles.modalToggle, ...styles.modalClose }}
+							/>
+							<Title>Modal!</Title>
+							<Text>stuff in modal</Text>
+						</View>
+					</Modal>
+				</Portal>
+				<Button style={{ marginTop: 30 }} onPress={showModal}>
+					<MaterialIcons name='add' size={24} style={styles.modalToggle} />
+					Show
+				</Button>
+			</Provider>
 		</View>
 	);
 }
+
+const styles = StyleSheet.create({
+	modalToggle: {
+		marginBottom: 10,
+		borderWidth: 1,
+		padding: 10,
+		borderRadius: 10,
+		alignSelf: 'center',
+	},
+	modalClose: {
+		marginTop: 20,
+		marginBottom: 0,
+	},
+});

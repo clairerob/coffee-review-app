@@ -2,15 +2,15 @@ import { View } from 'react-native';
 import { Text, Button } from 'react-native-paper';
 import { globalStyles } from '../styles/global';
 import Header from '../components/Header';
+import ReviewCard from '../components/ReviewCard';
 
 export default function ReviewDetails({ route, navigation }) {
 	const { title, rating, body } = route.params;
 	return (
 		<View style={globalStyles.container}>
 			<Header />
-			<Text>{title}</Text>
-			<Text>{rating}</Text>
-			<Text>{body}</Text>
+
+			<ReviewCard title={title} rating={rating} body={body} />
 
 			<Button mode='outlined' onPress={() => navigation.navigate('Home')}>
 				Go To Home
