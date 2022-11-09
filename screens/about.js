@@ -1,16 +1,12 @@
-import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { View } from 'react-native';
+import { Button, Headline } from 'react-native-paper';
+import { globalStyles } from '../styles/global';
 
-export default function About() {
+export default function About({ navigation }) {
 	return (
-		<View style={styles.container}>
-			<Text>About Screen</Text>
+		<View style={globalStyles.container}>
+			<Headline>About Screen</Headline>
+			<Button onPress={() => navigation.goBack()}>Go Back Home</Button>
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		padding: 24,
-	},
-});

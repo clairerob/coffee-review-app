@@ -18,7 +18,6 @@ import Home from './screens/home';
 import About from './screens/about';
 import Review from './screens/reviewDetails';
 import HeaderNinja from './components/HeaderNinja';
-import Header from './components/Header';
 
 export const ThemeContext = createContext({
 	toggleTheme: () => {},
@@ -47,16 +46,6 @@ export const ThemeContext = createContext({
 // 	},
 // };
 
-// const theme = {
-// 	...DefaultTheme,
-// 	roundness: 4,
-// 	colors: {
-// 		...DefaultTheme.colors,
-// 		error: '#ff13ff',
-// 		accent: '#99ffcc',
-// 	},
-// };
-
 const Drawer = createDrawerNavigator();
 
 const HomeStack = () => {
@@ -66,11 +55,7 @@ const HomeStack = () => {
 			<Stack.Screen
 				name='Home'
 				component={Home}
-				options={({ navigation }) => ({
-					headerTitle: () => (
-						<HeaderNinja navigation={navigation} title='GameZone' />
-					),
-				})}
+				options={{ headerTitle: () => <HeaderNinja /> }}
 			/>
 			<Stack.Screen
 				name='Review'
@@ -88,15 +73,21 @@ const AboutStack = () => {
 			<Stack.Screen
 				name='About'
 				component={About}
-				options={({ navigation }) => ({
-					headerTitle: () => (
-						<HeaderNinja navigation={navigation} title='About GameZone' />
-					),
-				})}
+				options={{ headerTitle: () => <HeaderNinja /> }}
 			/>
 		</Stack.Navigator>
 	);
 };
+
+// const theme = {
+// 	...DefaultTheme,
+// 	roundness: 4,
+// 	colors: {
+// 		...DefaultTheme.colors,
+// 		error: '#ff13ff',
+// 		accent: '#99ffcc',
+// 	},
+// };
 
 export default function App() {
 	const [isThemeDark, setIsThemeDark] = useState(false);
@@ -122,17 +113,13 @@ export default function App() {
 		<ThemeContext.Provider value={themeChoice}>
 			<PaperProvider theme={theme}>
 				<NavigationContainer>
-					<Drawer.Navigator screenOptions={{ headerShown: false }}>
+					<Drawer.Navigator>
 						<Drawer.Screen
 							name='HomeStack'
-							options={{ title: 'Home' }}
 							component={HomeStack}
+							options={{ headerShown: false }}
 						/>
-						<Drawer.Screen
-							name='AboutStack'
-							options={{ title: 'About' }}
-							component={AboutStack}
-						/>
+						<Drawer.Screen name='About' component={AboutStack} />
 					</Drawer.Navigator>
 				</NavigationContainer>
 			</PaperProvider>
