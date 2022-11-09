@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
 	Alert,
 	FlatList,
@@ -10,8 +10,26 @@ import {
 import Header from './Header';
 import TodoItem from './TodoItem';
 import AddTodo from './AddTodo';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
 export default function App() {
+	const [fontsLoaded] = useFonts({
+		Nunito: require('./assets/fonts/Nunito-Regular.ttf'),
+
+		//check this&in todoitem
+	});
+
+	const onLayoutRootView = useCallback(async () => {
+		if (fontsLoaded) {
+			await SplashScreen.hideAsync();
+		}
+	}, [fontsLoaded]);
+
+	if (!fontsLoaded) {
+		return null;
+	}
+
 	const [todos, setTodos] = useState([
 		{ text: 'buy coffee', key: '1' },
 		{ text: 'create an app', key: '2' },
@@ -38,7 +56,7 @@ export default function App() {
 
 	return (
 		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-			<View style={styles.container}>
+			<View style={styles.container} onLayout={onLayoutRootView}>
 				<Header />
 				<View style={styles.content}>
 					<AddTodo submitHandler={submitHandler} />
