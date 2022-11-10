@@ -10,7 +10,6 @@ export default function ItemCard(props) {
 		>
 			<Card.Content>
 				<Title>{props.item.title}</Title>
-				<Paragraph>some information about this item and its stuff</Paragraph>
 			</Card.Content>
 
 			<Card.Actions>

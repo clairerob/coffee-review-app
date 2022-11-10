@@ -5,9 +5,6 @@ import { ThemeContext } from '../styles/ThemeContext';
 const Header = () => {
 	const theme = useTheme();
 	const { toggleTheme, isThemeDark } = useContext(ThemeContext);
-	const [switchStatus, setSwitchStatus] = useState(false);
-
-	const toggleSwitch = () => setSwitchStatus(!switchStatus);
 
 	return (
 		<Appbar.Header
@@ -19,9 +16,7 @@ const Header = () => {
 		>
 			{/* <Appbar.Content title={scene.route?.name} /> */}
 			<Appbar.Content title={'placeholder text'} />
-			<TouchableRipple onPress={() => toggleTheme()}>
-				<Switch value={isThemeDark} onValueChange={toggleSwitch} />
-			</TouchableRipple>
+			<Switch value={isThemeDark} onValueChange={toggleTheme} />
 		</Appbar.Header>
 	);
 };

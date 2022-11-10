@@ -1,11 +1,25 @@
 import { StyleSheet, View, Image, ImageBackground } from 'react-native';
-import { Headline } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useContext, useState } from 'react';
+import {
+	Headline,
+	useTheme,
+	Switch,
+	Title,
+	TouchableRipple,
+} from 'react-native-paper';
+import { ThemeContext } from '../styles/ThemeContext';
 
 export default function Header({ navigation, title }) {
 	const openMenu = () => {
 		navigation.openDrawer();
 	};
+
+	const theme = useTheme();
+	const { toggleTheme, isThemeDark } = useContext(ThemeContext);
+
+	const [isPressed, setIsPressed] = useState(false);
+
 	return (
 		<ImageBackground
 			source={require('../assets/coffee-bg.jpg')}
@@ -23,6 +37,15 @@ export default function Header({ navigation, title }) {
 					style={styles.headerImage}
 				/>
 				<Headline>{title}</Headline>
+			</View>
+			<View
+				theme={{
+					colors: {
+						primary: theme?.colors.surface,
+					},
+				}}
+			>
+				<Switch value={isThemeDark} onValueChange={toggleTheme} />
 			</View>
 		</ImageBackground>
 	);

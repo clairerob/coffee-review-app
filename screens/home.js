@@ -1,5 +1,11 @@
 import { useContext, useState } from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import {
+	FlatList,
+	View,
+	StyleSheet,
+	TouchableWithoutFeedback,
+	Keyboard,
+} from 'react-native';
 import {
 	useTheme,
 	Switch,
@@ -16,50 +22,33 @@ import { ThemeContext } from '../styles/ThemeContext';
 import { globalStyles } from '../styles/global';
 import ItemCard from '../components/ItemCard';
 import { MaterialIcons } from '@expo/vector-icons';
+import { REVIEWS } from '../shared/REVIEWS';
+import ReviewForm from './reviewForm';
 
 export default function Home({ navigation }) {
 	const { colors } = useTheme();
 	const { toggleTheme, isThemeDark } = useContext(ThemeContext);
-	const [isSwitchOn, setIsSwitchOn] = useState(false);
-
-	const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
 	const [visible, setVisible] = useState(false);
-
 	const showModal = () => setVisible(true);
 	const hideModal = () => setVisible(false);
 
-	const [reviews, setReviews] = useState([
-		{
-			title: 'Zelda, Breath of Fresh Air',
-			rating: 4,
-			body: 'lorem ipsum lorem',
-			key: '1',
-		},
-		{
-			title: 'Pokemons Catch Them',
-			rating: 5,
-			body: 'lorem ipsum lorem',
-			key: '2',
-		},
-		{
-			title: 'Not So "Final" Eh',
-			rating: 2,
-			body: 'lorem ipsum lorem',
-			key: '3',
-		},
-	]);
+	const [reviews, setReviews] = useState(REVIEWS);
+
+	const addReview = (review) => {
+		review.key = Math.random().toString(); //DO NOT DO THIS IN PRODUCTION!!!
+		setReviews((prev) => [review, ...prev]);
+		hideModal();
+	};
 
 	return (
 		<View style={globalStyles.container}>
-			<Headline>Home Screen</Headline>
-			<TouchableRipple onPress={() => toggleTheme()}>
-				<Switch
-					style={[{ backgroundColor: colors.accent }]}
-					value={isThemeDark}
-					onValueChange={onToggleSwitch}
-				/>
-			</TouchableRipple>
+			<Button onPress={toggleTheme}>theme change mebs</Button>
+
+			<Button style={{ marginTop: 10 }} onPress={showModal}>
+				<MaterialIcons name='add' size={24} style={styles.modalToggle} />
+				Show
+			</Button>
 			<FlatList
 				data={reviews}
 				renderItem={({ item }) => (
@@ -80,35 +69,34 @@ export default function Home({ navigation }) {
 						contentContainerStyle={{
 							backgroundColor: '#9adfed',
 							padding: 20,
-							width: '90%',
-							height: '70%',
+							flex: 1,
 							alignItems: 'center',
 							justifyContent: 'center',
-							alignSelf: 'center',
 						}}
 					>
-						<View style={styles.modalContent}>
-							<MaterialIcons
-								name='close'
-								size={24}
-								onPress={() => hideModal}
-								style={{ ...styles.modalToggle, ...styles.modalClose }}
-							/>
-							<Title>Modal!</Title>
-							<Text>stuff in modal</Text>
-						</View>
+						<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+							<View style={styles.modalContent}>
+								<MaterialIcons
+									name='close'
+									size={24}
+									onPress={hideModal}
+									style={{ ...styles.modalToggle, ...styles.modalClose }}
+								/>
+								<ReviewForm addReview={addReview} />
+							</View>
+						</TouchableWithoutFeedback>
 					</Modal>
 				</Portal>
-				<Button style={{ marginTop: 30 }} onPress={showModal}>
-					<MaterialIcons name='add' size={24} style={styles.modalToggle} />
-					Show
-				</Button>
 			</Provider>
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
+	modalContent: {
+		width: '90%',
+		height: '80%',
+	},
 	modalToggle: {
 		marginBottom: 10,
 		borderWidth: 1,

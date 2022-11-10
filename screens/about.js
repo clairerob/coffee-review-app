@@ -1,12 +1,13 @@
 import { View } from 'react-native';
-import { Button, Headline } from 'react-native-paper';
+import { Headline } from 'react-native-paper';
 import { globalStyles } from '../styles/global';
+import ButtonNinja from '../components/ButtonNinja';
 
 export default function About({ navigation }) {
 	return (
 		<View style={globalStyles.container}>
 			<Headline>About Screen</Headline>
-			<Button onPress={() => navigation.goBack()}>Go Back Home</Button>
+			<ButtonNinja text='Go Back Home' onPress={() => navigation.goBack()} />
 		</View>
 	);
 }
